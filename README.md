@@ -34,14 +34,14 @@ o framework PHP Codeigniter para o back-end e ReactJS para o front-end.
   2. Configurar Variáveis de Ambiente
      - Crie os arquivos .env para o back-end e front-end com base nos exemplos disponíveis (.env.example).
   3. Utilize Docker Compose para iniciar os contêineres do back-end, front-end e banco de dados.
-    ```bash
-    cd backend
-    docker-compose up -d --build
-    ```
-    - Isso irá configurar:
-      - MySQL na porta 3306
-      - CodeIgniter (Back-end) na porta 8080
-      - Next.js (Front-end) na porta 3000
+  ```bash
+  cd backend
+  docker-compose up -d --build
+  ```
+  - Isso irá configurar:
+    - MySQL na porta 3306
+    - CodeIgniter (Back-end) na porta 8080
+    - Next.js (Front-end) na porta 3000
   4. Executar Migrações
     ```bash
     docker-compose exec app php spark migrate
