@@ -31,8 +31,7 @@ o framework PHP Codeigniter para o back-end e ReactJS para o front-end.
   ou para ssh
   git clone git@github.com:antonio-dsouza/delta_teste.git
   ```
-  2. Configurar Variáveis de Ambiente
-     - Crie os arquivos .env para o back-end e front-end com base nos exemplos disponíveis (.env.example).
+  2. Crie os arquivos .env para o back-end e front-end com base nos exemplos disponíveis (.env.example).
   3. Utilize Docker Compose para iniciar os contêineres do back-end, front-end e banco de dados.
   ```bash
   cd backend
