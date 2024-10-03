@@ -27,17 +27,18 @@ o framework PHP Codeigniter para o back-end e ReactJS para o front-end.
 ## Instruções de Instalação
   1. Clonar o Repositório
   ```bash
-  git clone https://github.com/antonio-dsouza/delta_teste.git ou para ssh
+  git clone https://github.com/antonio-dsouza/delta_teste.git
+  ou para ssh
   git clone git@github.com:antonio-dsouza/delta_teste.git
   ```
   2. Configurar Variáveis de Ambiente
      - Crie os arquivos .env para o back-end e front-end com base nos exemplos disponíveis (.env.example).
   3. Subir a Aplicação com Docker
      - Utilize Docker Compose para iniciar os contêineres do back-end, front-end e banco de dados.
-    ```bash
-    cd backend
-    docker-compose up -d --build
-    ```
+      ```bash
+      cd backend
+      docker-compose up -d --build
+      ```
     - Isso irá configurar:
       - MySQL na porta 3306
       - CodeIgniter (Back-end) na porta 8080
