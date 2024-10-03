@@ -42,9 +42,9 @@ o framework PHP Codeigniter para o back-end e ReactJS para o front-end.
     - CodeIgniter (Back-end) na porta 8080
     - Next.js (Front-end) na porta 3000
   4. Executar Migrações
-    ```bash
-    docker-compose exec app php spark migrate
-    ```
+  ```bash
+  docker-compose exec app php spark migrate
+  ```
 # Endpoints da API
 - ```GET /api/students```: Retorna a lista de alunos.
 - ```POST /api/students```: Cria um novo aluno.
