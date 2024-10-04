@@ -6,6 +6,7 @@ import {
   createStudent,
   updateStudent,
   deleteStudent,
+  getStudentById,
 } from "@services/studentService";
 import type { Student } from "@/types/student";
 import NavBar from "@/components/navegation/NavBar";
@@ -23,6 +24,9 @@ export default function StudentsPage() {
     email: "",
     phone: "",
     street: "",
+    street_number: "",
+    complement: "",
+    neighborhood: "",
     city: "",
     state: "",
     postal_code: "",
@@ -45,6 +49,21 @@ export default function StudentsPage() {
       toast.error("Erro ao carregar alunos", toastOptions);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStudentById = async (id: number) => {
+    try {
+      const student = await getStudentById(id);
+      if (student) {
+        setFormData({
+          ...student,
+          modalOpen: true,
+          isUpdating: true,
+        });
+      }
+    } catch {
+      toast.error("Erro ao carregar detalhes do aluno", toastOptions);
     }
   };
 
@@ -83,10 +102,14 @@ export default function StudentsPage() {
 
   const resetForm = () => {
     setFormData({
+      id: null,
       name: "",
       email: "",
       phone: "",
       street: "",
+      street_number: "",
+      complement: "",
+      neighborhood: "",
       city: "",
       state: "",
       postal_code: "",
@@ -94,29 +117,16 @@ export default function StudentsPage() {
       modalOpen: false,
       photo: null,
       isUpdating: false,
-      id: null,
     });
   };
 
-  const handleEdit = (student: Student) => {
-    setFormData({
-      name: student.name,
-      email: student.email,
-      phone: student.phone,
-      street: student.street,
-      city: student.city,
-      state: student.state,
-      postal_code: student.postal_code,
-      country: student.country,
-      photo: student.photo,
-      modalOpen: true,
-      isUpdating: true,
-      id: student.id,
-    });
+  const handleEdit = async (student: Student) => {
+    await fetchStudentById(student.id!);
   };
 
-  const handleView = (student: Student) => {
-    setViewingStudent(student);
+  const handleView = async (student: Student) => {
+    const fetchedStudent = await getStudentById(student.id!);
+    setViewingStudent(fetchedStudent);
   };
 
   const handleDelete = async (id: number | null) => {
@@ -140,7 +150,10 @@ export default function StudentsPage() {
           <h1 className="font-semibold text-5xl">Alunos</h1>
           <div className="w-40">
             <Button
-              onClick={() => setFormData({ ...formData, modalOpen: true })}
+              onClick={() => {
+                resetForm();
+                setFormData((prev) => ({ ...prev, modalOpen: true }));
+              }}
             >
               Adicionar
             </Button>

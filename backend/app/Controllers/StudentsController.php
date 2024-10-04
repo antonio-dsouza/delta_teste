@@ -63,7 +63,8 @@ class StudentsController extends ResourceController
     public function update($id = null)
     {
         $data = $this->request->getJSON(true);
-
+        var_dump($data);
+        exit;
         if (!$this->studentValidation->validateUpdate($data, $id)) {
             return $this->fail($this->studentValidation->getErrors());
         }

@@ -2,7 +2,6 @@
 
 namespace App\Validation;
 
-
 class StudentValidation
 {
     protected $validation;
@@ -12,7 +11,7 @@ class StudentValidation
         $this->validation = \Config\Services::validation();
     }
 
-    public function validateCreate(array $data): bool
+    public function validateCreate(array &$data): bool
     {
         $this->validation->setRules([
             'name' => [
@@ -49,6 +48,29 @@ class StudentValidation
                     'max_length' => 'A {field} deve ter no máximo {param} caracteres.'
                 ]
             ],
+            'street_number' => [
+                'rules' => 'required|max_length[6]',
+                'label' => 'Número',
+                'errors' => [
+                    'required' => 'O {field} é obrigatório.',
+                    'max_length' => 'O {field} deve ter no máximo {param} caracteres.'
+                ]
+            ],
+            'complement' => [
+                'rules' => 'permit_empty|max_length[128]',
+                'label' => 'Complemento',
+                'errors' => [
+                    'max_length' => 'O {field} deve ter no máximo {param} caracteres.'
+                ]
+            ],
+            'neighborhood' => [
+                'rules' => 'required|max_length[96]',
+                'label' => 'Bairro',
+                'errors' => [
+                    'required' => 'O {field} é obrigatório.',
+                    'max_length' => 'O {field} deve ter no máximo {param} caracteres.'
+                ]
+            ],
             'city' => [
                 'rules' => 'required|max_length[96]',
                 'label' => 'Cidade',
@@ -82,18 +104,17 @@ class StudentValidation
                 ]
             ],
             'photo' => [
-                'rules' => 'permit_empty|valid_base64_image',
+                'rules' => 'permit_empty',
                 'label' => 'Foto',
-                'errors' => [
-                    'valid_base64_image' => 'A imagem fornecida não é válida.'
-                ]
             ]
         ]);
+
+        $data = array_intersect_key($data, $this->validation->getRules());
 
         return $this->validation->run($data);
     }
 
-    public function validateUpdate(array $data, int $studentId): bool
+    public function validateUpdate(array &$data, int $studentId): bool
     {
         $this->validation->setRules([
             'name' => [
@@ -127,6 +148,27 @@ class StudentValidation
                     'max_length' => 'A {field} deve ter no máximo {param} caracteres.'
                 ]
             ],
+            'street_number' => [
+                'rules' => 'permit_empty|max_length[6]',
+                'label' => 'Número',
+                'errors' => [
+                    'max_length' => 'O {field} deve ter no máximo {param} caracteres.'
+                ]
+            ],
+            'complement' => [
+                'rules' => 'permit_empty|max_length[128]',
+                'label' => 'Complemento',
+                'errors' => [
+                    'max_length' => 'O {field} deve ter no máximo {param} caracteres.'
+                ]
+            ],
+            'neighborhood' => [
+                'rules' => 'permit_empty|max_length[96]',
+                'label' => 'Bairro',
+                'errors' => [
+                    'max_length' => 'O {field} deve ter no máximo {param} caracteres.'
+                ]
+            ],
             'city' => [
                 'rules' => 'permit_empty|max_length[96]',
                 'label' => 'Cidade',
@@ -156,13 +198,12 @@ class StudentValidation
                 ]
             ],
             'photo' => [
-                'rules' => 'permit_empty|valid_base64_image',
+                'rules' => 'permit_empty',
                 'label' => 'Foto',
-                'errors' => [
-                    'valid_base64_image' => 'A imagem fornecida não é válida.'
-                ]
             ]
         ]);
+
+        $data = array_intersect_key($data, $this->validation->getRules());
 
         return $this->validation->run($data);
     }

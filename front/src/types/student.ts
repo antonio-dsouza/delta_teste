@@ -4,6 +4,9 @@ export interface Student {
     email: string;
     phone: string;
     street: string;
+    street_number: string;
+    complement: string;
+    neighborhood: string;
     city: string;
     state: string;
     postal_code: string;

@@ -34,7 +34,22 @@ class CreateStudentsTable extends Migration
                 'constraint' => '255',
                 'null'       => true,
             ],
-            'city'        => [
+            'street_number'  => [
+                'type'       => 'VARCHAR',
+                'constraint' => '6',
+                'null'       => true,
+            ],
+            'complement'     => [
+                'type'       => 'VARCHAR',
+                'constraint' => '128',
+                'null'       => true,
+            ],
+            'neighborhood'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => '96',
+                'null'       => true,
+            ],
+            'city'  => [
                 'type'       => 'VARCHAR',
                 'constraint' => '96',
                 'null'       => true,

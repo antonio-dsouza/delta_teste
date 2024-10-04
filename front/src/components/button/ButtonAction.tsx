@@ -4,12 +4,12 @@ export default function ButtonAction({
   onClick,
 }: {
   icon: JSX.Element;
-  color: string;
+  color: { bg: string; hover: string };
   onClick: () => void;
 }) {
   return (
     <button
-      className={`flex w-6 h-6 rounded-lg justify-center items-center hover:bg-${color}-600 bg-${color}-500`}
+      className={`flex w-6 h-6 rounded-lg justify-center items-center ${color.bg} ${color.hover}`}
       onClick={onClick}
     >
       {icon}
