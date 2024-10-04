@@ -14,9 +14,16 @@ RUN apt-get update && apt-get install -y --fix-missing \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql mbstring zip  pdo pdo_mysql mysqli exif pcntl bcmath opcache intl
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 WORKDIR /var/www
 
 COPY . .
+
+COPY composer.json composer.lock ./
+RUN composer install --no-scripts --no-autoloader
+
+RUN composer dump-autoload --optimize
 
 RUN chown -R www-data:www-data /var/www/writable
 RUN chmod -R 777 /var/www/writable
