@@ -62,19 +62,21 @@ export default function StudentsPage() {
           isUpdating: true,
         });
       }
-    } catch {
-      toast.error("Erro ao carregar detalhes do aluno", toastOptions);
+    } catch (error) {
+      toast.error(
+        `Erro ao carregar detalhes do aluno com ID ${id}: ${error}`,
+        toastOptions
+      );
     }
   };
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const studentData = { ...formData, photo: formData.photo };
 
     try {
       const response = formData.isUpdating
-        ? await updateStudent(formData.id!, studentData)
-        : await createStudent(studentData);
+        ? await updateStudent(formData.id!, formData)
+        : await createStudent(formData);
 
       if ("error" in response) {
         handleValidationErrors(response.messages);
@@ -136,8 +138,8 @@ export default function StudentsPage() {
         await deleteStudent(id);
         toast.success("Aluno excluído com sucesso!", toastOptions);
         fetchStudents();
-      } catch {
-        toast.error("Erro ao excluir aluno", toastOptions);
+      } catch (error) {
+        toast.error(`Erro ao excluir aluno: ${error}`, toastOptions);
       }
     }
   };

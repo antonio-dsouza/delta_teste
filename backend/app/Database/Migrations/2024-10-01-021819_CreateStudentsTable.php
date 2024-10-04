@@ -70,8 +70,7 @@ class CreateStudentsTable extends Migration
                 'null'       => true,
             ],
             'photo'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '255',
+                'type'       => 'BLOB',
                 'null'       => true,
             ],
             'created_at'  => [

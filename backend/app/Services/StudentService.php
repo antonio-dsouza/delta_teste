@@ -48,12 +48,6 @@ class StudentService
 
     public function deleteStudent($id)
     {
-        $student = $this->studentRepository->findById($id);
-
-        if (!$student) {
-            throw new PageNotFoundException('Aluno não encontrado.');
-        }
-
         return $this->studentRepository->delete($id);
     }
 }

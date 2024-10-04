@@ -106,7 +106,7 @@ export default function StudentFormModal({
                   <InputGroup>
                     <Label htmlFor="postal_code">CEP</Label>
                     <Input
-                      mask="999999-999"
+                      mask="99999-999"
                       value={formData.postal_code}
                       name="postal_code"
                       id="postal_code"
