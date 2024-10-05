@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Edit, Eye, Trash } from "lucide-react";
 import type { Student } from "@/types/student";
-import bolo from "@assets/bolo.jpg";
+import DefaultUser from "@assets/default_user.jpg";
 import ButtonAction from "@components/button/ButtonAction";
 
 const colorClasses = {
@@ -30,6 +30,7 @@ export default function StudentRow({
   onView: (student: Student) => void;
   onDelete: (studentId: number | null) => void;
 }) {
+  console.log(student);
   const fullAddress = [
     student.street ? `${student.street} ${student.street_number}` : null,
     student.neighborhood ? `${student.neighborhood}` : null,
@@ -47,7 +48,13 @@ export default function StudentRow({
     <tr className="bg-white border-b hover:bg-gray-50">
       <td className="flex items-center px-6 py-4">
         <Image
-          src={bolo}
+          src={
+            typeof student.photo === "string" && student.photo.trim() !== ""
+              ? `${process.env.NEXT_PUBLIC_API_URL}/${student.photo}`
+              : DefaultUser
+          }
+          width={1000}
+          height={1000}
           alt="Imagem Aluno"
           className="w-10 h-10 rounded-full object-cover"
         />

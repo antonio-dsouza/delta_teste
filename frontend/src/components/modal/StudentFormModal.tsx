@@ -55,7 +55,7 @@ export default function StudentFormModal({
             </svg>
             <span className="sr-only">Fechar modal</span>
           </button>
-          <div className="px-6  overflow-scroll h-[500px] py-6 lg:px-8">
+          <div className="px-6 overflow-y-scroll h-[500px] py-6 lg:px-8">
             <h3 className="mb-4 text-xl font-medium text-gray-900">
               {formData.isUpdating ? "Atualizar aluno" : "Adicionar aluno"}
             </h3>

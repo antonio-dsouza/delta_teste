@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import NextAuthSessionProvider from "@providers/sessionProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -25,10 +24,8 @@ export default function RootLayout({
   return (
     <html className="bg-gray-100" lang="en">
       <body className={poppins.className}>
-        <NextAuthSessionProvider>
-          <ToastContainer />
-          {children}
-        </NextAuthSessionProvider>
+        <ToastContainer />
+        {children}
       </body>
     </html>
   );

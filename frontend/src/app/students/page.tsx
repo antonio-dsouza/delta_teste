@@ -14,6 +14,7 @@ import Button from "@/components/button/Button";
 import toastOptions from "@services/toastConfig";
 import StudentFormModal from "@components/modal/StudentFormModal";
 import StudentTable from "@components/table/StudentTable";
+import StudentViewModal from "@components/modal/StudentViewModal";
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -32,7 +33,7 @@ export default function StudentsPage() {
     postal_code: "",
     country: "",
     modalOpen: false,
-    photo: null,
+    photo: "",
     isUpdating: false,
   });
   const [viewingStudent, setViewingStudent] = useState<Student | null>(null);
@@ -117,7 +118,7 @@ export default function StudentsPage() {
       postal_code: "",
       country: "",
       modalOpen: false,
-      photo: null,
+      photo: "",
       isUpdating: false,
     });
   };
@@ -182,13 +183,10 @@ export default function StudentsPage() {
         )}
 
         {viewingStudent && (
-          <div className="modal">
-            <h2>Visualizando Aluno</h2>
-            <p>Nome: {viewingStudent.name}</p>
-            <p>Email: {viewingStudent.email}</p>
-            <p>Endereço: {viewingStudent.street}</p>
-            <Button onClick={() => setViewingStudent(null)}>Fechar</Button>
-          </div>
+          <StudentViewModal
+            formData={viewingStudent}
+            setViewingStudent={setViewingStudent}
+          />
         )}
       </main>
     </>

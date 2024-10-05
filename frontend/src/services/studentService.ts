@@ -1,5 +1,5 @@
 import type { Student } from "@/types/student";
-import { signOut } from "next-auth/react";
+import { logout } from "./authService";
 
 interface ValidationErrorResponse {
   error: number;
@@ -7,13 +7,24 @@ interface ValidationErrorResponse {
 }
 
 const handleUnauthorized = async () => {
-  await signOut({ redirect: false });
+  logout();
   window.location.replace('/login');
+};
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+  };
 };
 
 export const getStudents = async (): Promise<Student[]> => {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/api/students"
+    `${process.env.NEXT_PUBLIC_API_URL}/api/students`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+    }
   );
 
   if (response.status === 401) {
@@ -25,7 +36,11 @@ export const getStudents = async (): Promise<Student[]> => {
 
 export const getStudentById = async (id: number): Promise<Student> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL + "/api/students"}/${id}`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/students/${id}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+    }
   );
 
   if (response.status === 401) {
@@ -39,15 +54,15 @@ export const createStudent = async (
   student: Student
 ): Promise<Student | ValidationErrorResponse> => {
   const formData = new FormData();
-
   Object.entries(student).forEach(([key, value]) => {
     formData.append(key, value as string);
   });
 
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/api/students",
+    `${process.env.NEXT_PUBLIC_API_URL}/api/students`,
     {
       method: "POST",
+      headers: getAuthHeaders(),
       body: formData,
     }
   );
@@ -70,15 +85,15 @@ export const updateStudent = async (
   student: Student
 ): Promise<Student | ValidationErrorResponse> => {
   const formData = new FormData();
-
   Object.entries(student).forEach(([key, value]) => {
     formData.append(key, value as string);
   });
-  
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL + "/api/students"}/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/students/${id}`,
     {
       method: "PUT",
+      headers: getAuthHeaders(),
       body: formData,
     }
   );
@@ -92,9 +107,13 @@ export const updateStudent = async (
 };
 
 export const deleteStudent = async (id: number): Promise<void> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL + "/api/students"}/${id}`, {
-    method: "DELETE",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/students/${id}`,
+    {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    }
+  );
 
   if (response.status === 401) {
     await handleUnauthorized();

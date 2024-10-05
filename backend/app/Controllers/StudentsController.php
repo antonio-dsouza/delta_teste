@@ -73,7 +73,7 @@ class StudentsController extends ResourceController
 
     public function update($id = null)
     {
-        $data = $this->request->getRawInput();
+        $data = $this->request->getBody();
         $file = $this->request->getFile('photo');
 
         if (!$this->studentValidation->validateUpdate($data, $id)) {
@@ -87,6 +87,7 @@ class StudentsController extends ResourceController
                 $data['photo'] = $filePath;
             }
         }
+
         try {
             $student = $this->studentService->updateStudent($id, $data);
         } catch (PageNotFoundException $exception) {

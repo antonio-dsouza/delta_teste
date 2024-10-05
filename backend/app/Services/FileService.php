@@ -11,7 +11,7 @@ class FileService
     {
         if ($file && $file->isValid()) {
             $newName = $file->getRandomName();
-            $file->move(WRITEPATH . $path, $newName);
+            $file->move('../public/' . $path, $newName);
             return $path . '/' . $newName;
         }
 
@@ -20,8 +20,8 @@ class FileService
 
     public function deleteFile(string $filePath): bool
     {
-        if (file_exists(WRITEPATH . $filePath)) {
-            return unlink(WRITEPATH . $filePath);
+        if (file_exists('../public/' . $filePath)) {
+            return unlink('../public/' . $filePath);
         }
 
         return false;

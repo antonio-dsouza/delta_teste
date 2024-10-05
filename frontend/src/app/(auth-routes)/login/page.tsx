@@ -11,7 +11,7 @@ import useAuth from "@hooks/useAuth";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const { login, loading } = useAuth();
+  const { handleLogin, loading } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,7 +20,7 @@ export default function Login() {
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    await login(formData.email, formData.password);
+    await handleLogin(formData.email, formData.password);
   };
 
   return (

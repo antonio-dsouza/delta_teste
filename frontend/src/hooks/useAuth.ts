@@ -1,39 +1,38 @@
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
+import { login } from "../services/authService";
 import toastOptions from "@services/toastConfig";
 
 const useAuth = () => {
   const [loading, setLoading] = useState(false);
 
-  const login = async (email: string, password: string) => {
+  const handleLogin = async (email: string, password: string) => {
     setLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await login(email, password);
 
-    setLoading(false);
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("name", result.user.name);
 
-    if (result?.error) {
-      toast.error("Erro ao logar, verifique os dados!", toastOptions);
+      toast.info("Logado com sucesso, redirecionando!", {
+        ...toastOptions,
+      });
+
+      setTimeout(() => {
+        window.location.replace("/");
+      }, 3000);
+
+      return true;
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Erro ao logar, verifique os dados', toastOptions);
       return false;
+    } finally {
+      setLoading(false);
     }
-
-    toast.info("Logado com sucesso, redirecionando!", {
-      ...toastOptions,
-    });
-
-    setTimeout(() => {
-      window.location.replace("/");
-    }, 3000);
-
-    return true;
   };
 
-  return { login, loading };
+  return { handleLogin, loading };
 };
 
 export default useAuth;

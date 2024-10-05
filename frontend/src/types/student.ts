@@ -11,7 +11,7 @@ export interface Student {
     state: string;
     postal_code: string;
     country: string;
-    photo: File | null;
+    photo: File | string | null;
     modalOpen: boolean,
     isUpdating: boolean,
 }

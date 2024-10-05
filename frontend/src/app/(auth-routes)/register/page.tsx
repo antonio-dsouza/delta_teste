@@ -9,7 +9,8 @@ import Button from "@components/button/Button";
 import useRegister from "@hooks/useRegister";
 
 const Register: React.FC = () => {
-  const { formData, handleInputChange, register, loading } = useRegister();
+  const { formData, handleInputChange, handleRegister, loading } =
+    useRegister();
 
   return (
     <section className="h-screen">
@@ -20,7 +21,7 @@ const Register: React.FC = () => {
             <h1 className="text-gray-950 text-3xl font-semibold">
               Cadastre-se
             </h1>
-            <form className="flex flex-col gap-4" onSubmit={register}>
+            <form className="flex flex-col gap-4" onSubmit={handleRegister}>
               <InputGroup>
                 <Label htmlFor="name">Nome completo</Label>
                 <Input

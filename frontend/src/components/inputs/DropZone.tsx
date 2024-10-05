@@ -2,7 +2,7 @@ import { useDropzone } from "react-dropzone";
 
 interface DropzoneProps {
   onFileChange: (file: File | null) => void;
-  file: File | null;
+  file: File | string | null;
 }
 
 export default function Dropzone({ onFileChange, file }: DropzoneProps) {
