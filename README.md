@@ -34,7 +34,6 @@ o framework PHP Codeigniter para o back-end e ReactJS para o front-end.
   2. Crie os arquivos .env para o back-end e front-end com base nos exemplos disponíveis (.env.example).
   3. Utilize Docker Compose para iniciar os contêineres do back-end, front-end e banco de dados.
   ```bash
-  cd backend
   docker-compose up -d --build
   ```
   - Isso irá configurar:
