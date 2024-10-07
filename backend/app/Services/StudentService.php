@@ -50,4 +50,17 @@ class StudentService
     {
         return $this->studentRepository->delete($id);
     }
+
+    public function getDashboardStatistics()
+    {
+        $totalStudents = $this->studentRepository->countAll();
+        $studentsLastWeek = $this->studentRepository->countByDateRange('-1 week');
+        $studentsLastMonth = $this->studentRepository->countByDateRange('-1 month');
+
+        return [
+            'total_students' => $totalStudents,
+            'students_last_week' => $studentsLastWeek,
+            'students_last_month' => $studentsLastMonth,
+        ];
+    }
 }

@@ -4,8 +4,9 @@ import Input from "@components/inputs/Input";
 import InputGroup from "@components/inputs/InputGroup";
 import Label from "@components/labels/Label";
 import { Student } from "@/types/student";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import Divider from "@components/divider/Divider";
+import { fetchAddressByPostalCode } from "@services/cepService";
 
 export default function StudentFormModal({
   formData,
@@ -16,6 +17,8 @@ export default function StudentFormModal({
   setFormData: (formData: Student) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }) {
+  const [loading, setLoading] = useState(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -23,6 +26,35 @@ export default function StudentFormModal({
 
   const handleFileChange = (file: File | null) =>
     setFormData({ ...formData, photo: file });
+
+  async function handlePostalCodeChange(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const { value } = e.target;
+    setFormData({ ...formData, postal_code: value });
+
+    const onlyDigits = value.replace(/\D/g, "");
+    if (onlyDigits.length < 8) return;
+
+    setLoading(true);
+
+    try {
+      const address = await fetchAddressByPostalCode(value);
+      setFormData({
+        ...formData,
+        postal_code: value,
+        street: address.street,
+        neighborhood: address.neighborhood,
+        city: address.city,
+        state: address.state,
+        complement: address.complement,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar o endereço:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div
@@ -112,7 +144,7 @@ export default function StudentFormModal({
                       id="postal_code"
                       type="text"
                       placeholder="Digite o CEP"
-                      onChange={handleInputChange}
+                      onChange={handlePostalCodeChange}
                       required
                     />
                   </InputGroup>
@@ -147,9 +179,8 @@ export default function StudentFormModal({
                       name="complement"
                       id="complement"
                       type="text"
-                      placeholder="Digite o oomplemento"
+                      placeholder="Digite o complemento"
                       onChange={handleInputChange}
-                      required
                     />
                   </InputGroup>
                 </div>
@@ -209,10 +240,19 @@ export default function StudentFormModal({
                   onFileChange={handleFileChange}
                 />
                 <Button>
-                  {formData.isUpdating ? "Atualizar" : "Adicionar"}
+                  {loading
+                    ? "Carregando..."
+                    : formData.isUpdating
+                    ? "Atualizar"
+                    : "Adicionar"}
                 </Button>
               </div>
             </form>
+            {loading && (
+              <div className="absolute inset-0 flex justify-center items-center bg-gray-200 bg-opacity-50">
+                <span className="text-lg font-bold">Carregando...</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

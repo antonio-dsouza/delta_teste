@@ -15,6 +15,7 @@ import toastOptions from "@services/toastConfig";
 import StudentFormModal from "@components/modal/StudentFormModal";
 import StudentTable from "@components/table/StudentTable";
 import StudentViewModal from "@components/modal/StudentViewModal";
+import Swal from "sweetalert2";
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -134,13 +135,25 @@ export default function StudentsPage() {
 
   const handleDelete = async (id: number | null) => {
     if (!id) return;
-    if (window.confirm("Tem certeza que deseja excluir este aluno?")) {
+
+    const result = await Swal.fire({
+      title: "Tem certeza?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
       try {
         await deleteStudent(id);
-        toast.success("Aluno excluído com sucesso!", toastOptions);
+        Swal.fire("Excluído!", "O aluno foi excluído com sucesso.", "success");
         fetchStudents();
       } catch (error) {
-        toast.error(`Erro ao excluir aluno: ${error}`, toastOptions);
+        Swal.fire("Erro!", `Erro ao excluir aluno: ${error}`, "error");
       }
     }
   };

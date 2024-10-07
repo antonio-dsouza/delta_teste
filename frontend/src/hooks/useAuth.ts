@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { login } from "../services/authService";
 import toastOptions from "@services/toastConfig";
 
-const useAuth = () => {
+export default function useAuth() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (email: string, password: string) => {
@@ -21,11 +21,16 @@ const useAuth = () => {
 
       setTimeout(() => {
         window.location.replace("/");
-      }, 3000);
+      }, 1000);
 
       return true;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erro ao logar, verifique os dados', toastOptions);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Erro ao logar, verifique os dados",
+        toastOptions
+      );
       return false;
     } finally {
       setLoading(false);
@@ -33,6 +38,4 @@ const useAuth = () => {
   };
 
   return { handleLogin, loading };
-};
-
-export default useAuth;
+}

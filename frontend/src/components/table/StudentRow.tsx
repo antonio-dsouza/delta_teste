@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Edit, Eye, Trash } from "lucide-react";
 import type { Student } from "@/types/student";
-import DefaultUser from "@assets/default_user.jpg";
+import DefaultUser from "@assets/default_user.png";
 import ButtonAction from "@components/button/ButtonAction";
 
 const colorClasses = {
@@ -30,7 +30,6 @@ export default function StudentRow({
   onView: (student: Student) => void;
   onDelete: (studentId: number | null) => void;
 }) {
-  console.log(student);
   const fullAddress = [
     student.street ? `${student.street} ${student.street_number}` : null,
     student.neighborhood ? `${student.neighborhood}` : null,

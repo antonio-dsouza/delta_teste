@@ -104,13 +104,8 @@ class StudentValidation
                 ]
             ],
             'photo' => [
-                'rules' => 'permit_empty|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]|max_size[photo,2048]',
+                'rules' => 'permit_empty',
                 'label' => 'Foto',
-                'errors' => [
-                    'is_image' => 'O arquivo enviado não é uma imagem válida.',
-                    'mime_in' => 'O {field} deve ser JPG, JPEG ou PNG.',
-                    'max_size' => 'O {field} deve ter no máximo 2MB.'
-                ]
             ]
         ]);
 
@@ -203,10 +198,9 @@ class StudentValidation
                 ]
             ],
             'photo' => [
-                'rules' => 'permit_empty|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]|max_size[photo,2048]',
+                'rules' => 'permit_empty',
                 'label' => 'Foto',
                 'errors' => [
-                    'is_image' => 'O arquivo enviado não é uma imagem válida.',
                     'mime_in' => 'O {field} deve ser JPG, JPEG ou PNG.',
                     'max_size' => 'O {field} deve ter no máximo 2MB.'
                 ]

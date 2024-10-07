@@ -40,4 +40,16 @@ class StudentRepository
         $this->model->delete($id);
         return ['id' => $id];
     }
+
+    public function countAll()
+    {
+        return $this->model->countAllResults();
+    }
+
+    public function countByDateRange($dateRange)
+    {
+        return $this->model
+            ->where('created_at >=', date('Y-m-d H:i:s', strtotime($dateRange)))
+            ->countAllResults();
+    }
 }

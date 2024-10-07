@@ -26,7 +26,11 @@ export default function Dropzone({ onFileChange, file }: DropzoneProps) {
     >
       <input {...getInputProps()} />
       {file ? (
-        <p>{file.name}</p>
+        typeof file === "string" ? (
+          <p>{file}</p>
+        ) : (
+          <p>{file.name}</p>
+        )
       ) : (
         <p>Arraste e solte uma imagem aqui, ou clique para selecionar</p>
       )}

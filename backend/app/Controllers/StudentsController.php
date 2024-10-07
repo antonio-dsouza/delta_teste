@@ -48,18 +48,18 @@ class StudentsController extends ResourceController
 
     public function create()
     {
-        $data = $this->request->getPost();
-        $file = $this->request->getFile('photo');
+        $data = $this->request->getJSON(true);
 
         if (!$this->studentValidation->validateCreate($data)) {
             return $this->fail($this->studentValidation->getErrors());
         }
 
-        if (!empty($file)) {
-            $filePath = $this->fileService->uploadFile($file, 'uploads/students');
-            if ($filePath) {
-                $data['photo'] = $filePath;
+        if (isset($data['photo']) && !empty($data['photo'])) {
+            $photoPath = $this->fileService->uploadBase64Image($data['photo'], 'uploads/students');
+            if (!$photoPath) {
+                return $this->fail('Erro ao enviar a imagem.', 400);
             }
+            $data['photo'] = $photoPath;
         }
 
         try {
@@ -73,19 +73,18 @@ class StudentsController extends ResourceController
 
     public function update($id = null)
     {
-        $data = $this->request->getBody();
-        $file = $this->request->getFile('photo');
+        $data = $this->request->getJSON(true);
 
         if (!$this->studentValidation->validateUpdate($data, $id)) {
             return $this->fail($this->studentValidation->getErrors());
         }
 
-        if (!empty($file)) {
-            $filePath = $this->fileService->uploadFile($file, 'uploads/students');
-
-            if ($filePath) {
-                $data['photo'] = $filePath;
+        if (isset($data['photo']) && !empty($data['photo'])) {
+            $photoPath = $this->fileService->uploadBase64Image($data['photo'], 'uploads/students');
+            if (!$photoPath) {
+                return $this->fail('Erro ao enviar a imagem.', 400);
             }
+            $data['photo'] = $photoPath;
         }
 
         try {
@@ -96,7 +95,7 @@ class StudentsController extends ResourceController
             return $this->fail($exception->getMessage());
         }
 
-        return $this->respond($student);
+        return $this->respondUpdated($student);
     }
 
     public function delete($id = null)

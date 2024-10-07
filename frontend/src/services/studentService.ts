@@ -1,24 +1,27 @@
 import type { Student } from "@/types/student";
 import { logout } from "./authService";
+import { getBase64 } from "./fileService";
+import { StudentDashboard } from "@/types/studentDashboard";
 
 interface ValidationErrorResponse {
   error: number;
   messages: Record<string, string>;
 }
 
-const handleUnauthorized = async () => {
+async function handleUnauthorized() {
   logout();
-  window.location.replace('/login');
-};
+  window.location.replace("/login");
+}
 
-const getAuthHeaders = () => {
+function getAuthHeaders() {
   const token = localStorage.getItem("token");
   return {
-    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    "Content-Type": "application/json",
   };
-};
+}
 
-export const getStudents = async (): Promise<Student[]> => {
+export async function getStudents(): Promise<Student[]> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/students`,
     {
@@ -32,9 +35,9 @@ export const getStudents = async (): Promise<Student[]> => {
   }
 
   return response.json();
-};
+}
 
-export const getStudentById = async (id: number): Promise<Student> => {
+export async function getStudentById(id: number): Promise<Student> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/students/${id}`,
     {
@@ -48,22 +51,22 @@ export const getStudentById = async (id: number): Promise<Student> => {
   }
 
   return response.json();
-};
-
-export const createStudent = async (
+}
+export async function createStudent(
   student: Student
-): Promise<Student | ValidationErrorResponse> => {
-  const formData = new FormData();
-  Object.entries(student).forEach(([key, value]) => {
-    formData.append(key, value as string);
-  });
+): Promise<Student | ValidationErrorResponse> {
+  if (student.photo instanceof File) {
+    student.photo = await getBase64(student.photo);
+  }
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/students`,
     {
       method: "POST",
-      headers: getAuthHeaders(),
-      body: formData,
+      headers: {
+        ...getAuthHeaders(),
+      },
+      body: JSON.stringify(student),
     }
   );
 
@@ -78,23 +81,24 @@ export const createStudent = async (
   }
 
   return response.json();
-};
+}
 
-export const updateStudent = async (
+export async function updateStudent(
   id: number,
   student: Student
-): Promise<Student | ValidationErrorResponse> => {
-  const formData = new FormData();
-  Object.entries(student).forEach(([key, value]) => {
-    formData.append(key, value as string);
-  });
+): Promise<Student | ValidationErrorResponse> {
+  if (student.photo instanceof File) {
+    student.photo = await getBase64(student.photo);
+  }
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/students/${id}`,
     {
       method: "PUT",
-      headers: getAuthHeaders(),
-      body: formData,
+      headers: {
+        ...getAuthHeaders(),
+      },
+      body: JSON.stringify(student),
     }
   );
 
@@ -103,10 +107,15 @@ export const updateStudent = async (
     return { error: 401, messages: { general: "Não autorizado" } };
   }
 
-  return response.json();
-};
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    return { error: response.status, messages: errorResponse.messages };
+  }
 
-export const deleteStudent = async (id: number): Promise<void> => {
+  return response.json();
+}
+
+export async function deleteStudent(id: number): Promise<void> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/students/${id}`,
     {
@@ -120,4 +129,20 @@ export const deleteStudent = async (id: number): Promise<void> => {
   }
 
   return response.json();
-};
+}
+
+export async function getStudentDashboard(): Promise<StudentDashboard> {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+    }
+  );
+
+  if (response.status === 401) {
+    await handleUnauthorized();
+  }
+
+  return response.json();
+}

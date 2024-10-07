@@ -1,9 +1,8 @@
 import InputGroup from "@components/inputs/InputGroup";
-import Label from "@components/labels/Label";
 import { Student } from "@/types/student";
 import Divider from "@components/divider/Divider";
 import Image from "next/image";
-import DefaultUser from "@assets/default_user.jpg";
+import DefaultUser from "@assets/default_user.png";
 
 export default function StudentViewModal({
   formData,
@@ -51,53 +50,61 @@ export default function StudentViewModal({
               <Divider text="Dados gerais" />
               <div className="flex gap-1 flex-grow max-md:flex-col">
                 <InputGroup>
-                  <Label htmlFor="name">Nome</Label>
-                  <Label>{formData.name}</Label>
+                  <h1 className="font-medium">Nome</h1>
+                  <p>{formData.name != "" ? formData.name : "-"}</p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="email">Email</Label>
-                  <Label>{formData.email}</Label>
+                  <h1 className="font-medium">Email</h1>
+                  <p>{formData.email != "" ? formData.email : "-"}</p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="phone">Telefone</Label>
-                  <Label>{formData.phone}</Label>
+                  <h1 className="font-medium">Telefone</h1>
+                  <p>{formData.phone != "" ? formData.phone : "-"}</p>
                 </InputGroup>
               </div>
               <Divider text="Endereço" />
               <div className="flex gap-1 flex-grow max-md:flex-col">
                 <InputGroup>
-                  <Label htmlFor="postal_code">CEP</Label>
-                  <Label>{formData.postal_code}</Label>
+                  <h1 className="font-medium">CEP</h1>
+                  <p>
+                    {formData.postal_code != "" ? formData.postal_code : "-"}
+                  </p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="street">Rua</Label>
-                  <Label>{formData.street}</Label>
+                  <h1 className="font-medium">Rua</h1>
+                  <p>{formData.street != "" ? formData.street : "-"}</p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="street_number">Número</Label>
-                  <Label>{formData.street_number}</Label>
+                  <h1 className="font-medium">Número</h1>
+                  <p>
+                    {formData.street_number != ""
+                      ? formData.street_number
+                      : "-"}
+                  </p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="complement">Complemento</Label>
-                  <Label>{formData.complement}</Label>
+                  <h1 className="font-medium">Complemento</h1>
+                  <p>{formData.complement != "" ? formData.complement : "-"}</p>
                 </InputGroup>
               </div>
               <div className="flex gap-1 flex-grow max-md:flex-col">
                 <InputGroup>
-                  <Label htmlFor="neighborhood">Bairro</Label>
-                  <Label>{formData.neighborhood}</Label>
+                  <h1 className="font-medium">Bairro</h1>
+                  <p>
+                    {formData.neighborhood != "" ? formData.neighborhood : "-"}
+                  </p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="city">Cidade</Label>
-                  <Label>{formData.city}</Label>
+                  <h1 className="font-medium">Cidade</h1>
+                  <p>{formData.city != "" ? formData.city : "-"}</p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="state">Estado</Label>
-                  <Label>{formData.state}</Label>
+                  <h1 className="font-medium">Estado</h1>
+                  <p>{formData.state != "" ? formData.state : "-"}</p>
                 </InputGroup>
                 <InputGroup>
-                  <Label htmlFor="country">País</Label>
-                  <Label>{formData.country}</Label>
+                  <h1 className="font-medium">País</h1>
+                  <p>{formData.country != "" ? formData.country : "-"}</p>
                 </InputGroup>
               </div>
               <Divider text="Imagem" />

@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->group('api', function ($routes) {
     $routes->resource('students', ['controller' => 'StudentsController']);
+    $routes->get('dashboard', 'DashboardController::index');
 });
 
 $routes->group('auth', function ($routes) {

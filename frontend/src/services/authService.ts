@@ -1,4 +1,4 @@
-export const login = async (email: string, password: string) => {
+export async function login (email: string, password: string) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: {
@@ -15,7 +15,7 @@ export const login = async (email: string, password: string) => {
     return data;
 };
 
-export const register = async (formData: { email: string; password: string; name: string }) => {
+export async function register (formData: { email: string; password: string; name: string }) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
         method: "POST",
         headers: {
@@ -29,21 +29,20 @@ export const register = async (formData: { email: string; password: string; name
         if (data.messages) {
             const errorMessages = data.messages;
             throw new Error(errorMessages[Object.keys(errorMessages)[0]]);
-        } else {
-            throw new Error("Erro ao fazer registro, tente novamente");
         }
+        throw new Error("Erro ao fazer registro, tente novamente");
     }
 
     const data = await response.json();
     return data;
 };
 
-export const logout = () => {
+export function logout() {
     localStorage.removeItem("token");
     window.location.replace("/login");
 };
 
-export const isAuthenticated = () => {
+export function isAuthenticated() {
     const token = localStorage.getItem("token");
     return !!token;
 };

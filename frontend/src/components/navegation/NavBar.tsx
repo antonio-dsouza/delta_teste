@@ -41,7 +41,7 @@ export default function NavBar() {
         <div className="relative inline-block text-left">
           <div className="flex gap-3 justify-center items-center">
             <div className="flex flex-col items-end gap-1">
-              <h1 className="text-sm">Olá {userName ?? ""}</h1>
+              <h1 className="text-sm">{userName ?? ""}</h1>
               <button
                 onClick={handleLogout}
                 className="p-2 border h-6 border-gray-300 rounded-md flex items-center gap-2 hover:bg-gray-100"
